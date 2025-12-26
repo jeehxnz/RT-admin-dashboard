@@ -1,5 +1,6 @@
 import axios from 'axios';
 import type { AxiosInstance } from 'axios';
+import { supabase } from '../lib/supabase';
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL?.replace(/\/+$/, '') || 'http://localhost:8080';
@@ -14,21 +15,31 @@ export function getApiClient(): AxiosInstance {
 }
 
 export function createApiClient(): AxiosInstance {
-  const apiKey = localStorage.getItem('rt_api_key');
-  
   const client = axios.create({
     baseURL: API_BASE_URL,
     headers: {
       'Content-Type': 'application/json',
-      ...(apiKey && { Authorization: `Bearer ${apiKey}` }),
     },
+  });
+
+  client.interceptors.request.use(async (config) => {
+    const { data, error } = await supabase.auth.getSession();
+    if (!error) {
+      const token = data.session?.access_token;
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      } else {
+        delete config.headers.Authorization;
+      }
+    }
+    return config;
   });
 
   client.interceptors.response.use(
     (response) => response,
-    (error) => {
+    async (error) => {
       if (error.response?.status === 401) {
-        localStorage.removeItem('rt_api_key');
+        await supabase.auth.signOut();
         window.location.href = '/login';
       }
       return Promise.reject(error);
@@ -41,18 +52,3 @@ export function createApiClient(): AxiosInstance {
 export function resetApiClient(): void {
   apiClient = null;
 }
-
-export function setApiKey(key: string): void {
-  localStorage.setItem('rt_api_key', key);
-  resetApiClient();
-}
-
-export function clearApiKey(): void {
-  localStorage.removeItem('rt_api_key');
-  resetApiClient();
-}
-
-export function getApiKey(): string | null {
-  return localStorage.getItem('rt_api_key');
-}
-

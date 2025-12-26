@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { KeyRound, AlertCircle, Loader2 } from 'lucide-react';
+import { KeyRound, AlertCircle, Loader2, Mail, Lock } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { Input } from '../components/ui/Input';
 import { Button } from '../components/ui/Button';
-import { checkHealth } from '../api/health';
 
 interface LoginForm {
-  apiKey: string;
+  email: string;
+  password: string;
 }
 
 export function Login() {
@@ -28,19 +28,14 @@ export function Login() {
     setIsChecking(true);
 
     try {
-      // First check if the server is healthy
-      const isHealthy = await checkHealth();
-      if (!isHealthy) {
-        setError('Cannot connect to the API server. Please ensure the backend is running.');
-        setIsChecking(false);
+      const result = await login(data.email, data.password);
+      if (result && 'error' in result && result.error) {
+        setError(result.error);
         return;
       }
-
-      // Store the API key and navigate
-      login(data.apiKey);
       navigate('/');
-    } catch {
-      setError('Failed to connect to the server.');
+    } catch (err) {
+      setError('Login failed. Please try again.');
     } finally {
       setIsChecking(false);
     }
@@ -67,18 +62,31 @@ export function Login() {
         {/* Login Form */}
         <div className="bg-[--color-surface] rounded-2xl border border-[--color-border] p-8 shadow-xl">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-            <div className="relative">
-              <Input
-                label="API Key"
-                type="password"
-                placeholder="Enter your API key"
-                {...register('apiKey', { required: 'API key is required' })}
-                error={errors.apiKey?.message}
-              />
-              <KeyRound
-                size={18}
-                className="absolute right-3 top-9 text-[--color-text-muted]"
-              />
+            <div className="space-y-4">
+              <div className="relative">
+                <Input
+                  label="Email"
+                  type="email"
+                  placeholder="you@example.com"
+                  {...register('email', {
+                    required: 'Email is required',
+                  })}
+                  error={errors.email?.message}
+                />
+                <Mail size={18} className="absolute right-3 top-9 text-[--color-text-muted]" />
+              </div>
+              <div className="relative">
+                <Input
+                  label="Password"
+                  type="password"
+                  placeholder="Enter your password"
+                  {...register('password', {
+                    required: 'Password is required',
+                  })}
+                  error={errors.password?.message}
+                />
+                <Lock size={18} className="absolute right-3 top-9 text-[--color-text-muted]" />
+              </div>
             </div>
 
             {error && (
@@ -101,7 +109,7 @@ export function Login() {
           </form>
 
           <p className="text-center text-xs text-[--color-text-muted] mt-6">
-            The API key is stored locally and sent with each request.
+            Your credentials are securely handled by Supabase Auth.
           </p>
         </div>
       </div>

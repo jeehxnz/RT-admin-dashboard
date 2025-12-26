@@ -1,3 +1,5 @@
+import type { Session, User as SupabaseUser } from '@supabase/supabase-js';
+
 // API Response Types
 export interface ApiResponse<T> {
   ok: boolean;
@@ -5,6 +7,10 @@ export interface ApiResponse<T> {
   error?: string;
   count?: number;
 }
+
+// Supabase Auth Types
+export type AuthUser = SupabaseUser;
+export type AuthSession = Session;
 
 // User Types
 export interface User {

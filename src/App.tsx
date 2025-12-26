@@ -4,6 +4,8 @@ import { AuthProvider } from './context/AuthContext';
 import { Layout } from './components/layout/Layout';
 import { ProtectedRoute } from './components/layout/ProtectedRoute';
 import { Login } from './pages/Login';
+import { AuthCallback } from './pages/AuthCallback';
+import { RequestLink } from './pages/RequestLink';
 import { Dashboard } from './pages/Dashboard';
 import { Users } from './pages/Users';
 import { BonusCodes } from './pages/BonusCodes';
@@ -27,6 +29,8 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/login" element={<Login />} />
+            <Route path="/auth/callback" element={<AuthCallback />} />
+            <Route path="/auth/request-link" element={<RequestLink />} />
             <Route
               element={
                 <ProtectedRoute>
