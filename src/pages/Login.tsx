@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { KeyRound, AlertCircle, Loader2, Mail, Lock } from 'lucide-react';
+import { AlertCircle, Loader2, Mail, Lock } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { Input } from '../components/ui/Input';
 import { Button } from '../components/ui/Button';
