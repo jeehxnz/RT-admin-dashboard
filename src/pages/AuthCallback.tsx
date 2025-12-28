@@ -29,17 +29,30 @@ export function AuthCallback() {
   useEffect(() => {
     const exchange = async () => {
       const params = new URLSearchParams(location.search);
-      const code = params.get('code');
-      if (!code) {
+      const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ''));
+
+      const code = params.get('code') || params.get('token');
+      const accessToken = hashParams.get('access_token');
+      const refreshToken = hashParams.get('refresh_token');
+
+      if (code) {
+        const { error } = await supabase.auth.exchangeCodeForSession(code);
+        if (error) {
+          setSessionError(error.message);
+        }
+      } else if (accessToken && refreshToken) {
+        const { error } = await supabase.auth.setSession({
+          access_token: accessToken,
+          refresh_token: refreshToken,
+        });
+        if (error) {
+          setSessionError(error.message);
+        }
+      } else {
         setSessionError('Invalid or missing verification code.');
-        setLoading(false);
-        return;
       }
 
-      const { error } = await supabase.auth.exchangeCodeForSession(code);
-      if (error) {
-        setSessionError(error.message);
-      }
+      window.history.replaceState({}, document.title, location.pathname + location.search);
       setLoading(false);
     };
 
