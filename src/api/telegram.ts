@@ -5,7 +5,7 @@ export async function sendTelegramToClub(
   data: SendTelegramRequest
 ): Promise<ApiResponse<SendTelegramResponse>> {
   const response = await getApiClient().post<ApiResponse<SendTelegramResponse>>(
-    '/v1/telegram/send-club',
+    '/telegram/send-club',
     data
   );
   return response.data;

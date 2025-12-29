@@ -9,19 +9,19 @@ export async function listUsers(filters?: UserFilters): Promise<ApiResponse<User
   if (filters?.club) params.append('club', filters.club);
 
   const queryString = params.toString();
-  const url = queryString ? `/v1/users?${queryString}` : '/v1/users';
+  const url = queryString ? `/users?${queryString}` : '/users';
   
   const response = await getApiClient().get<ApiResponse<User[]>>(url);
   return response.data;
 }
 
 export async function upsertUser(data: UpsertUserRequest): Promise<ApiResponse<User>> {
-  const response = await getApiClient().post<ApiResponse<User>>('/v1/users.upsert', data);
+  const response = await getApiClient().post<ApiResponse<User>>('/users.upsert', data);
   return response.data;
 }
 
 export async function deleteUser(clubGgId: string): Promise<ApiResponse<DeleteResponse>> {
-  const response = await getApiClient().delete<ApiResponse<DeleteResponse>>(`/v1/users/${clubGgId}`);
+  const response = await getApiClient().delete<ApiResponse<DeleteResponse>>(`/users/${clubGgId}`);
   return response.data;
 }
 

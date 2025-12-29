@@ -16,34 +16,34 @@ export async function listBonusCodes(filters?: BonusCodeFilters): Promise<ApiRes
   if (filters?.club) params.append('club', filters.club);
 
   const queryString = params.toString();
-  const url = queryString ? `/v1/bonus-codes?${queryString}` : '/v1/bonus-codes';
+  const url = queryString ? `/bonus-codes?${queryString}` : '/bonus-codes';
   
   const response = await getApiClient().get<ApiResponse<BonusCode[]>>(url);
   return response.data;
 }
 
 export async function getBonusCode(code: string): Promise<ApiResponse<BonusCode>> {
-  const response = await getApiClient().get<ApiResponse<BonusCode>>(`/v1/bonus-codes/${code}`);
+  const response = await getApiClient().get<ApiResponse<BonusCode>>(`/bonus-codes/${code}`);
   return response.data;
 }
 
 export async function createBonusCode(data: CreateBonusCodeRequest): Promise<ApiResponse<BonusCode>> {
-  const response = await getApiClient().post<ApiResponse<BonusCode>>('/v1/bonus-codes', data);
+  const response = await getApiClient().post<ApiResponse<BonusCode>>('/bonus-codes', data);
   return response.data;
 }
 
 export async function updateBonusCode(code: string, data: UpdateBonusCodeRequest): Promise<ApiResponse<BonusCode>> {
-  const response = await getApiClient().put<ApiResponse<BonusCode>>(`/v1/bonus-codes/${code}`, data);
+  const response = await getApiClient().put<ApiResponse<BonusCode>>(`/bonus-codes/${code}`, data);
   return response.data;
 }
 
 export async function deleteBonusCode(code: string): Promise<ApiResponse<DeleteResponse>> {
-  const response = await getApiClient().delete<ApiResponse<DeleteResponse>>(`/v1/bonus-codes/${code}`);
+  const response = await getApiClient().delete<ApiResponse<DeleteResponse>>(`/bonus-codes/${code}`);
   return response.data;
 }
 
 export async function redeemBonusCode(code: string): Promise<ApiResponse<BonusCode>> {
-  const response = await getApiClient().post<ApiResponse<BonusCode>>('/v1/bonus-codes/redeem', { code });
+  const response = await getApiClient().post<ApiResponse<BonusCode>>('/bonus-codes/redeem', { code });
   return response.data;
 }
 
