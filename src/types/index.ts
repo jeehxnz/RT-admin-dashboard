@@ -52,7 +52,7 @@ export interface BonusCode {
 export interface CreateBonusCodeRequest {
   code: string;
   bonus_type: string;
-  player_email: string;
+  player_email?: string;
   club_gg_id: string;
   is_redeemed?: boolean;
 }
@@ -62,6 +62,37 @@ export interface UpdateBonusCodeRequest {
   player_email?: string;
   club_gg_id?: string;
   is_redeemed?: boolean;
+}
+
+// Bulk Bonus Code Types
+export interface BulkCreateSendBonusCodesRequest {
+  club: string;
+  bonus_type: string;
+  code_prefix?: string;
+  code_length?: number;
+  send_email: boolean;
+  send_telegram: boolean;
+  email_subject?: string;
+  email_body?: string;
+  telegram_text?: string;
+}
+
+export interface BulkCreateSendFailure {
+  club_gg_id: string;
+  reason: string;
+  channel?: 'email' | 'telegram' | 'both';
+}
+
+export interface BulkCreateSendBonusCodesResponse {
+  created: number;
+  email_sent: number;
+  telegram_sent: number;
+  failures?: BulkCreateSendFailure[];
+  codes?: Array<{
+    code: string;
+    club_gg_id: string;
+    player_email?: string;
+  }>;
 }
 
 export interface BonusCodeFilters {

@@ -5,7 +5,9 @@ import type {
   CreateBonusCodeRequest, 
   UpdateBonusCodeRequest, 
   BonusCodeFilters, 
-  DeleteResponse 
+  DeleteResponse,
+  BulkCreateSendBonusCodesRequest,
+  BulkCreateSendBonusCodesResponse, 
 } from '../types';
 
 export async function listBonusCodes(filters?: BonusCodeFilters): Promise<ApiResponse<BonusCode[]>> {
@@ -44,6 +46,16 @@ export async function deleteBonusCode(code: string): Promise<ApiResponse<DeleteR
 
 export async function redeemBonusCode(code: string): Promise<ApiResponse<BonusCode>> {
   const response = await getApiClient().post<ApiResponse<BonusCode>>('/bonus-codes/redeem', { code });
+  return response.data;
+}
+
+export async function bulkCreateAndSendBonusCodes(
+  data: BulkCreateSendBonusCodesRequest
+): Promise<ApiResponse<BulkCreateSendBonusCodesResponse>> {
+  const response = await getApiClient().post<ApiResponse<BulkCreateSendBonusCodesResponse>>(
+    '/bonus-codes/bulk-create-send',
+    data
+  );
   return response.data;
 }
 
