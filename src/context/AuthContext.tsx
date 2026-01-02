@@ -31,6 +31,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       } else {
         setSession(data.session);
         setUser(data.session?.user ?? null);
+        // ensure API client picks up any persisted token on initial load
+        if (data.session) {
+          resetApiClient();
+        }
       }
       setLoading(false);
     });
