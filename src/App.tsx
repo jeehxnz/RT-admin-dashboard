@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
 import { Layout } from './components/layout/Layout';
 import { ProtectedRoute } from './components/layout/ProtectedRoute';
 import { Login } from './pages/Login';
@@ -24,31 +25,33 @@ const queryClient = new QueryClient({
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/auth/callback" element={<AuthCallback />} />
-            <Route path="/auth/request-link" element={<RequestLink />} />
-            <Route
-              element={
-                <ProtectedRoute>
-                  <Layout />
-                </ProtectedRoute>
-              }
-            >
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/users" element={<Users />} />
-              <Route path="/bonus-codes" element={<BonusCodes />} />
-              <Route path="/send-email" element={<SendEmail />} />
-              <Route path="/send-club" element={<SendClub />} />
-              <Route path="/send-telegram" element={<SendTelegram />} />
-            </Route>
-          </Routes>
-        </BrowserRouter>
-      </AuthProvider>
-    </QueryClientProvider>
+    <ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route path="/auth/callback" element={<AuthCallback />} />
+              <Route path="/auth/request-link" element={<RequestLink />} />
+              <Route
+                element={
+                  <ProtectedRoute>
+                    <Layout />
+                  </ProtectedRoute>
+                }
+              >
+                <Route path="/" element={<Dashboard />} />
+                <Route path="/users" element={<Users />} />
+                <Route path="/bonus-codes" element={<BonusCodes />} />
+                <Route path="/send-email" element={<SendEmail />} />
+                <Route path="/send-club" element={<SendClub />} />
+                <Route path="/send-telegram" element={<SendTelegram />} />
+              </Route>
+            </Routes>
+          </BrowserRouter>
+        </AuthProvider>
+      </QueryClientProvider>
+    </ThemeProvider>
   );
 }
 

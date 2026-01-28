@@ -6,9 +6,12 @@ import {
   Mail, 
   LogOut,
   Menu,
-  X
+  X,
+  Sun,
+  Moon
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { useTheme } from '../../context/ThemeContext';
 import { useState } from 'react';
 
 const navItems = [
@@ -21,6 +24,7 @@ const navItems = [
 
 export function Sidebar() {
   const { logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -82,8 +86,15 @@ export function Sidebar() {
           ))}
         </nav>
 
-        {/* Logout */}
-        <div className="px-4 py-6 border-t border-[--color-border]">
+        {/* Theme Toggle & Logout */}
+        <div className="px-4 py-6 border-t border-[--color-border] space-y-1">
+          <button
+            onClick={toggleTheme}
+            className="flex items-center gap-3 px-4 py-3 rounded-lg text-[--color-text-muted] hover:bg-[--color-surface-hover] hover:text-[--color-text] transition-colors w-full"
+          >
+            {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+            <span className="font-medium">{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
+          </button>
           <button
             onClick={logout}
             className="flex items-center gap-3 px-4 py-3 rounded-lg text-[--color-text-muted] hover:bg-[--color-danger]/10 hover:text-[--color-danger] transition-colors w-full"
