@@ -9,10 +9,10 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const variants = {
-  primary: 'bg-[--color-accent] hover:bg-[--color-accent-hover] text-white font-semibold',
-  secondary: 'bg-[--color-surface] hover:bg-[--color-surface-hover] text-[--color-text] border border-[--color-border]',
-  danger: 'bg-[--color-danger] hover:bg-[--color-danger]/80 text-white font-semibold',
-  ghost: 'hover:bg-[--color-surface-hover] text-[--color-text-muted] hover:text-[--color-text]',
+  primary: 'bg-[--color-accent] hover:bg-[--color-accent-hover] text-white font-semibold border border-[--color-accent] hover:border-[--color-accent-hover] shadow-sm',
+  secondary: 'bg-[--color-surface] hover:bg-[--color-surface-hover] text-[--color-text] font-medium border-2 border-[--color-border] shadow-sm',
+  danger: 'bg-[--color-danger] hover:opacity-90 text-white font-semibold border border-[--color-danger] shadow-sm',
+  ghost: 'hover:bg-[--color-surface-hover] text-[--color-text] font-medium border border-transparent hover:border-[--color-border]',
 };
 
 const sizes = {
