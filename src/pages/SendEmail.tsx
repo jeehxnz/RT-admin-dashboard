@@ -237,6 +237,7 @@ export function SendEmail() {
               </Button>
               <Button
                 type="submit"
+                variant="primary"
                 isLoading={sendMutation.isPending}
                 disabled={recipients.length === 0}
                 className="sm:flex-1"

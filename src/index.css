@@ -37,6 +37,36 @@
   --color-backdrop: rgba(0, 0, 0, 0.3);
 }
 
+/* Light mode: ensure buttons have visible text and icons (high contrast) */
+[data-theme="light"] button[data-variant="secondary"],
+[data-theme="light"] button[data-variant="ghost"] {
+  color: #0f172a;
+}
+
+[data-theme="light"] button[data-variant="secondary"] {
+  background-color: #ffffff;
+  border-color: #94a3b8;
+}
+
+[data-theme="light"] button[data-variant="secondary"]:hover:not(:disabled),
+[data-theme="light"] button[data-variant="ghost"]:hover:not(:disabled) {
+  background-color: #f1f5f9;
+  border-color: #64748b;
+  color: #0f172a;
+}
+
+[data-theme="light"] button[data-variant="primary"],
+[data-theme="light"] button[data-variant="danger"] {
+  color: #ffffff;
+}
+
+[data-theme="light"] button[data-variant="primary"] svg,
+[data-theme="light"] button[data-variant="danger"] svg,
+[data-theme="light"] button[data-variant="secondary"] svg,
+[data-theme="light"] button[data-variant="ghost"] svg {
+  color: inherit;
+}
+
 * {
   box-sizing: border-box;
 }

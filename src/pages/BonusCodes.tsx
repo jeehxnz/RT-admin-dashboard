@@ -22,6 +22,7 @@ import { Badge } from '../components/ui/Badge';
 import { Table, TableHeader, TableBody, TableRow, TableCell } from '../components/ui/Table';
 import { EmptyState } from '../components/ui/EmptyState';
 import { ConfirmDialog } from '../components/ui/ConfirmDialog';
+import { Pagination } from '../components/ui/Pagination';
 import {
   listBonusCodes, 
   createBonusCode, 
@@ -72,6 +73,8 @@ export function BonusCodes() {
   const [deletingCode, setDeletingCode] = useState<BonusCode | null>(null);
   const [redeemingCode, setRedeemingCode] = useState<BonusCode | null>(null);
   const [bulkResult, setBulkResult] = useState<BulkCreateSendBonusCodesResponse | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   // Fetch bonus codes
   const { data, isLoading, refetch, isFetching } = useQuery({
@@ -152,6 +155,15 @@ export function BonusCodes() {
       )
     : bonusCodes;
 
+  // Paginate filtered codes
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedCodes = filteredCodes.slice(startIndex, startIndex + itemsPerPage);
+
+  // Reset to page 1 when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, filters]);
+
   const handleFilterChange = (key: keyof BonusCodeFilters, value: string) => {
     setFilters((prev) => ({
       ...prev,
@@ -172,8 +184,8 @@ export function BonusCodes() {
             <Plus size={18} />
             Bulk Create for Club
           </Button>
-          <Button onClick={() => setIsCreateModalOpen(true)}>
-            <Plus size={18} />
+          <Button variant="primary" size="lg" onClick={() => setIsCreateModalOpen(true)} className="shadow-md hover:shadow-lg">
+            <Plus size={20} />
             Create Code
           </Button>
         </div>
@@ -283,7 +295,7 @@ export function BonusCodes() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredCodes.map((code) => {
+                {paginatedCodes.map((code) => {
                   const player = userLookup[code.club_gg_id];
 
                   return (
@@ -345,12 +357,12 @@ export function BonusCodes() {
                             </Button>
                           )}
                           <Button
-                            variant="ghost"
+                            variant="danger"
                             size="sm"
                             onClick={() => setDeletingCode(code)}
                             title="Delete code"
                           >
-                            <Trash2 size={16} className="text-[--color-danger]" />
+                            <Trash2 size={16} />
                           </Button>
                         </div>
                       </TableCell>
@@ -361,6 +373,20 @@ export function BonusCodes() {
             </Table>
           )}
         </div>
+        {filteredCodes.length > 0 && (
+          <div className="border-t border-[--color-border]">
+            <Pagination
+              currentPage={currentPage}
+              totalItems={filteredCodes.length}
+              itemsPerPage={itemsPerPage}
+              onPageChange={setCurrentPage}
+              onItemsPerPageChange={(count) => {
+                setItemsPerPage(count);
+                setCurrentPage(1);
+              }}
+            />
+          </div>
+        )}
       </Card>
 
       {/* Create Bonus Code Modal */}

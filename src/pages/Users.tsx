@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { Plus, Search, Trash2, Eye, Users as UsersIcon, Loader2, RefreshCw } from 'lucide-react';
@@ -11,6 +11,7 @@ import { Badge } from '../components/ui/Badge';
 import { Table, TableHeader, TableBody, TableRow, TableCell } from '../components/ui/Table';
 import { EmptyState } from '../components/ui/EmptyState';
 import { ConfirmDialog } from '../components/ui/ConfirmDialog';
+import { Pagination } from '../components/ui/Pagination';
 import { listUsers, upsertUser, deleteUser } from '../api/users';
 import type { User, UpsertUserRequest, UserFilters } from '../types';
 
@@ -27,6 +28,8 @@ export function Users() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [viewingUser, setViewingUser] = useState<User | null>(null);
   const [deletingUser, setDeletingUser] = useState<User | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   // Fetch users
   const { data, isLoading, refetch, isFetching } = useQuery({
@@ -63,6 +66,15 @@ export function Users() {
           user.email?.toLowerCase().includes(searchQuery.toLowerCase())
       )
     : users;
+
+  // Paginate filtered users
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedUsers = filteredUsers.slice(startIndex, startIndex + itemsPerPage);
+
+  // Reset to page 1 when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, filters]);
 
   const handleFilterChange = (key: keyof UserFilters, value: string) => {
     setFilters((prev) => ({
@@ -151,7 +163,7 @@ export function Users() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredUsers.map((user) => (
+                {paginatedUsers.map((user) => (
                   <TableRow key={user.club_gg_id}>
                     <TableCell>
                       <span className="font-[family-name:var(--font-mono)] font-medium">
@@ -193,11 +205,11 @@ export function Users() {
                           <Eye size={16} />
                         </Button>
                         <Button
-                          variant="ghost"
+                          variant="danger"
                           size="sm"
                           onClick={() => setDeletingUser(user)}
                         >
-                          <Trash2 size={16} className="text-[--color-danger]" />
+                          <Trash2 size={16} />
                         </Button>
                       </div>
                     </TableCell>
@@ -207,6 +219,20 @@ export function Users() {
             </Table>
           )}
         </div>
+        {filteredUsers.length > 0 && (
+          <div className="border-t border-[--color-border]">
+            <Pagination
+              currentPage={currentPage}
+              totalItems={filteredUsers.length}
+              itemsPerPage={itemsPerPage}
+              onPageChange={setCurrentPage}
+              onItemsPerPageChange={(count) => {
+                setItemsPerPage(count);
+                setCurrentPage(1);
+              }}
+            />
+          </div>
+        )}
       </Card>
 
       {/* Create User Modal */}

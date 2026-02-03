@@ -32,6 +32,7 @@ export function Button({
 }: ButtonProps) {
   return (
     <button
+      data-variant={variant}
       className={`
         inline-flex items-center justify-center gap-2 rounded-lg
         transition-colors duration-200

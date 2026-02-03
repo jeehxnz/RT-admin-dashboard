@@ -204,6 +204,7 @@ export function SendClub() {
               </Button>
               <Button
                 type="submit"
+                variant="primary"
                 isLoading={sendMutation.isPending}
                 disabled={
                   selectedClubs.length === 0 ||

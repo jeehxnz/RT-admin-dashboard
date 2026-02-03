@@ -151,6 +151,7 @@ export function SendTelegram() {
             <div className="flex flex-col sm:flex-row gap-3 pt-2 border-t border-[--color-border]">
               <Button
                 type="submit"
+                variant="primary"
                 isLoading={sendMutation.isPending}
                 disabled={!selectedClub || !message || sendMutation.isPending}
                 className="sm:flex-1"
