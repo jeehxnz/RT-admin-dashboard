@@ -19,6 +19,10 @@
   --color-warning: #f59e0b;
   --color-danger: #ef4444;
   --color-backdrop: rgba(0, 0, 0, 0.6);
+  /* Button backgrounds so they don't blend with surface */
+  --color-button-secondary: #334155;
+  --color-button-secondary-hover: #475569;
+  --color-button-secondary-disabled: #1e293b;
 }
 
 /* Light theme overrides */
@@ -35,62 +39,10 @@
   --color-warning: #d97706;
   --color-danger: #dc2626;
   --color-backdrop: rgba(0, 0, 0, 0.3);
-}
-
-/* Light mode: ensure buttons have visible text and icons (high contrast) */
-[data-theme="light"] button[data-variant="secondary"],
-[data-theme="light"] button[data-variant="ghost"] {
-  color: #0f172a;
-}
-
-[data-theme="light"] button[data-variant="secondary"] {
-  background-color: #ffffff;
-  border-color: #94a3b8;
-}
-
-[data-theme="light"] button[data-variant="secondary"]:hover:not(:disabled),
-[data-theme="light"] button[data-variant="ghost"]:hover:not(:disabled) {
-  background-color: #f1f5f9;
-  border-color: #64748b;
-  color: #0f172a;
-}
-
-[data-theme="light"] button[data-variant="primary"] {
-  background-color: #0891b2;
-  border-color: #0891b2;
-  color: #ffffff;
-}
-
-[data-theme="light"] button[data-variant="primary"]:hover:not(:disabled) {
-  background-color: #0e7490;
-  border-color: #0e7490;
-  color: #ffffff;
-}
-
-[data-theme="light"] button[data-variant="primary"]:disabled {
-  background-color: #0e7490;
-  border-color: #0e7490;
-  color: #f8fafc;
-  opacity: 0.7;
-}
-
-[data-theme="light"] button[data-variant="danger"] {
-  background-color: #dc2626;
-  border-color: #dc2626;
-  color: #ffffff;
-}
-
-[data-theme="light"] button[data-variant="danger"]:hover:not(:disabled) {
-  background-color: #b91c1c;
-  border-color: #b91c1c;
-  color: #ffffff;
-}
-
-[data-theme="light"] button[data-variant="primary"] svg,
-[data-theme="light"] button[data-variant="danger"] svg,
-[data-theme="light"] button[data-variant="secondary"] svg,
-[data-theme="light"] button[data-variant="ghost"] svg {
-  color: inherit;
+  /* Distinct gray so secondary buttons don't blend with white cards */
+  --color-button-secondary: #e2e8f0;
+  --color-button-secondary-hover: #cbd5e1;
+  --color-button-secondary-disabled: #e2e8f0;
 }
 
 * {
