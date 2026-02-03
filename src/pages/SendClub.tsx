@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
-import { Send, CheckCircle, AlertCircle, Eye, X, Megaphone } from 'lucide-react';
+import { Send, CheckCircle, AlertCircle, Eye, X } from 'lucide-react';
 import { Card, CardHeader, CardContent } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
@@ -220,23 +220,6 @@ export function SendClub() {
           </CardContent>
         </Card>
       </form>
-
-      <Card>
-        <CardContent className="p-4">
-          <div className="flex items-start gap-3">
-            <Megaphone size={20} className="text-[--color-accent] mt-0.5" />
-            <div>
-              <p className="font-medium text-[--color-text] mb-1">How it works</p>
-              <ul className="text-sm text-[--color-text-muted] space-y-1">
-                <li>• Select one or more clubs (CC, AT, RT).</li>
-                <li>• Subject is required.</li>
-                <li>• Provide at least one body: HTML or Plain Text.</li>
-                <li>• The request sends `club` as a pipe-separated string (e.g., CC|RT).</li>
-              </ul>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
 
       <Modal
         isOpen={isPreviewOpen}
